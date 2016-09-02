@@ -6,7 +6,7 @@ def build_body(data):
     s = ""
     for i in range(len(data)):
         if i % 2 == 0:  # adding the SQL command
-            s += "\\begin{verbatim}" + data[i] + "; \n \\end{verbatim} \n"
+            s += "\\begin{verbatim} \n" + data[i] + "; \n \\end{verbatim} \n"
         else:  # adding the SQL output (table)
             s += build_table(data[i])
     return s
@@ -32,12 +32,17 @@ def build_postamble():
 
 
 def build_table(line):
+    s = line
+    if (s[0] == '\n'):
+        s = s[1:]
+    s = s[:s.find('\n')-1]
+    num_cols = s.count(',') + 1
     s = "\\begin{table}[h] \n" \
              "\\scriptsize \n" \
              "\\centering \n" \
              "\\caption{INSERT CAPTION} \n" \
              "\\label{my - label} \n" \
-             "\\begin{tabular}{" + 'c ' * 12 + "}" + parse_csv(line) + "\\end{tabular} \n \\end{table} "
+             "\\begin{tabular}{" + 'c ' * num_cols + "} \n" + parse_csv(line) + "\\end{tabular} \n \\end{table} "
     return s
 
 

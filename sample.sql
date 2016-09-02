@@ -9,8 +9,8 @@
 -- a.
 SELECT *
 FROM Stocks2016.d2010
-WHERE cusip = '45920010';
-
+WHERE cusip = '45920010'
+LIMIT 10;
 -- b.
 SELECT *
 FROM Stocks2016.d2010
