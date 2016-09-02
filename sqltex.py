@@ -1,17 +1,17 @@
-import sqlToTexParser
+import engine
 import subprocess
-import sqlOutputReader
+import reader
 import sys
 
-db, file_in = sqlOutputReader.get_args()
+db, file_in = reader.get_args()
 
 if db is not None and file_in is not None:
     proc = subprocess.Popen(args=["psql", "-a", "-A", "-F", ",", "-d", db, "-f", file_in], stdout=subprocess.PIPE)
     # http://stackoverflow.com/questions/4514751/pipe-subprocess-standard-output-to-a-variable
     data = proc.stdout.read()
-    sqlToTexParser.build_tex_string(data)
+    engine.write_tex_file(data)
 elif len(sys.argv) <= 2 and file_in is not None:
-    sqlToTexParser.build_tex_string(file_in)
+    engine.write_tex_file(file_in)
 else:
     sys.stderr("Database or sql or txt not given. Program exiting")
 

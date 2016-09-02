@@ -1,4 +1,4 @@
-from sqlOutputReader import get_data, read_sql
+import reader
 import re
 
 
@@ -42,11 +42,11 @@ def build_table(line):
 
 
 def build_tex_string(data):
-    data = read_sql(data)
+    data = reader.read_sql(data)
     s = build_preamble()
     s += build_body(data)
     s += build_postamble()
-    write_tex_file(s)
+    return s
 
 
 def parse_csv(csv_str):
@@ -56,7 +56,8 @@ def parse_csv(csv_str):
     return s
 
 
-def write_tex_file(s):
+def write_tex_file(data):
+    s = build_tex_string(data)
     fd = open("output.tex", "w")
     fd.write(s)
     fd.close()
