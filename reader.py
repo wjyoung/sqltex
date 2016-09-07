@@ -46,5 +46,6 @@ def read_sql(data):
     """
     #data = data.strip('\r')
     data = re.sub('\\(\\d* \\w*\\)', ";", data)
+    data = re.sub('&', '\&', data)
     data = data.split(';')
     return data
