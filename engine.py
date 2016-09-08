@@ -38,7 +38,6 @@ def build_table(line):
     s = s[:s.find('\n')-1]
     num_cols = s.count(',') + 1
     s = "\\begin{table}[h] \n" \
-             "\\scriptsize \n" \
              "\\centering \n" \
              "\\caption{INSERT CAPTION} \n" \
              "\\label{my - label} \n" \
