@@ -1,8 +1,13 @@
 import sys
 import re
 
-
 def get_args():
+    """
+    Reads args provided and reacts accordingly.
+    Not fully functional.
+
+    :return: tuple containing database name and sql file name
+    """
     db = None
     file_in = None
     if len(sys.argv) <= 2:
@@ -31,21 +36,30 @@ def get_args():
 
 
 def get_data():
-    if len(sys.argv)==1: # if no file given, read from stdin
+    """
+    Reads the file provided by arg[1] or stdin if no arg given.
+
+    :return: A string of the contents of the file
+    """
+    if len(sys.argv) == 1:  # if no file given, read from stdin
         data = sys.stdin.read()
     else:
         f = open(sys.argv[1], "r")
         data = f.read()
         f.close()
-    return data # or data.strip?
+    return data  # or data.strip?
 
 
 def read_sql(data):
     """
     Read sql with queries from data string and return a list of lines
+
+    :return: A formatted string of the sql queries and tables
     """
     #data = data.strip('\r')
     data = re.sub('\\(\\d* \\w*\\)', ";", data)
     data = re.sub('&', '\&', data)
+    data = re.sub('_', '\_', data)
+    data = re.sub('%', '\%', data)
     data = data.split(';')
     return data
