@@ -1,6 +1,7 @@
 import sys
 import re
 
+
 def get_args():
     """
     Reads args provided and reacts accordingly.

@@ -2,11 +2,7 @@ import reader
 import re
 
 
-query_template = """\\begin{verbatim}%s;
-\\end{verbatim}
-"""
-
-preamble = """\\documentclass[12 pt]{article}
+doc_template = """\\documentclass[12 pt]{article}
 \\usepackage[margin = 1 in]{geometry}
 \\usepackage{amsmath, amsthm, amssymb, amsfonts, listings, textcomp, booktabs, color, lscape, wrapfig}
 \\geometry{left = 0.5 in, right = 0.5 in, footskip = 0.25 in}
@@ -15,10 +11,13 @@ preamble = """\\documentclass[12 pt]{article}
 \\author{INSERT AUTHORS}
 \\maketitle
 \\begin{flushleft}
+%s
+\\end{flushleft}
+\\end{document}
 """
 
-postamble = """\end{flushleft}
-\end{document}
+query_template = """\\begin{verbatim}%s;
+\\end{verbatim}
 """
 
 table_template = """\\begin{table}[h]
@@ -50,24 +49,6 @@ def build_body(data):
     return s
 
 
-def build_preamble():
-    """
-    Returns the boilerplate header for a Latex file.
-
-    :return: Latex header string
-    """
-    return preamble
-
-
-def build_postamble():
-    """
-    Returns the boilerplate footer for a Latex file.
-
-    :return: Latex footer string
-    """
-    return postamble
-
-
 def build_table(line):
     """
     Takes a psql formatted table and returns a Latex formatted table.
@@ -75,14 +56,7 @@ def build_table(line):
     :param line: string representation of a psql formatted table
     :return: Latex formatted table
     """
-    s = line
-    if s[0] == '\n':
-        s = s[1:]
-    s = s[:s.find('\n')-1]
-    num_cols = s.count(',') + 1
-    col_marker = 'c ' * num_cols
-    s = table_template % (col_marker, parse_csv(line))
-    return s
+    return table_template % (get_column_marker(line), parse_csv(line))
 
 
 def build_tex_string(data):
@@ -93,10 +67,20 @@ def build_tex_string(data):
     :return: A Latex typesettable formatted string.
     """
     data = reader.read_sql(data)
-    s = build_preamble()
-    s += build_body(data)
-    s += build_postamble()
-    return s
+    return doc_template % build_body(data)
+
+
+def get_column_marker(line):
+    """
+    Creates a string of 'c's to set the number of columns in LAtex document.
+
+    :param line: string of psql output
+    :return: string of c's
+    """
+    line = line.lstrip('\n')
+    line = line.splitlines()[0]
+    num_cols = line.count(',') + 1
+    return 'c ' * num_cols
 
 
 def parse_csv(csv_str):
