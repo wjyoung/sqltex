@@ -30,6 +30,7 @@ table_template = """\\begin{table}[h]
 %s\\hline
 \\end{tabular}
 \\end{table}
+\\pagebreak
 """
 
 
