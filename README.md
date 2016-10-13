@@ -12,11 +12,17 @@ python sqltex.py -d databasename -f filename.sql
 The .sql file should be formatted as:
  
  -- comment of some sort
+ 
  -- do not include a semicolon in the comments. The only
+ 
  -- place for a semi colon is at the end of a query.
+ 
  --  There must be a semicolon at the end of the query.
+ 
  -- It is a good idea to use limits otherwise Latex is overloaded.
  
  SELECT col_1
+ 
  FROM table_A
+ 
  LIMIT 10;
