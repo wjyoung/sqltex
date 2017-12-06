@@ -1,5 +1,4 @@
 import argparse
-import sys
 import re
 
 
@@ -22,21 +21,6 @@ def get_args():
     sql_file = args.sql_file if args.sql_file else raw_input('Enter .sql file to run\n')
     db = args.database if args.database else raw_input('Enter database name\n')
     return db, sql_file
-
-
-def get_data():
-    """
-    Reads the file provided by arg[1] or stdin if no arg given.
-
-    :return: A string of the contents of the file
-    """
-    if len(sys.argv) == 1:  # if no file given, read from stdin
-        data = sys.stdin.read()
-    else:
-        f = open(sys.argv[1], "r")
-        data = f.read()
-        f.close()
-    return data  # or data.strip?
 
 
 def read_sql(data):
