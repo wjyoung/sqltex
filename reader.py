@@ -1,5 +1,13 @@
+import argparse
 import sys
 import re
+
+
+def establish_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--database', help='Database name', required=False)
+    parser.add_argument('-f', '--sql_file', help='File containing SQL queries', required=False)
+    return parser.parse_args()
 
 
 def get_args():
@@ -9,31 +17,11 @@ def get_args():
 
     :return: tuple containing database name and sql file name
     """
-    db = None
-    file_in = None
-    if len(sys.argv) <= 2:
-        file_in = get_data()
-    elif len(sys.argv) == 3:
-        if sys.argv[1] == '-d':
-            db = sys.argv[2]
-            print "Enter .sql to run:"
-            file_in = sys.stdin()
-        else:
-            sys.stderr.write("ERROR: Command not recognized %s" % sys.argv[1])
-    elif len(sys.argv) == 5:
-        if sys.argv[1] == sys.argv[3]:
-            sys.stderr.write("ERROR: Command repeated")
-            return db, file_in
-        for i in [1, 3]:
-            if sys.argv[i] == '-d':
-                db = sys.argv[i + 1]
-            elif sys.argv[i] == '-f':
-                file_in = sys.argv[i + 1]
-            else:
-                sys.stderr.write("ERROR: Command not recognized %s" % sys.argv[1])
-    else:
-        sys.stderr("Unsupported number of arguments given")
-    return db, file_in
+
+    args = establish_args()
+    sql_file = args.sql_file if args.sql_file else raw_input('Enter .sql file to run\n')
+    db = args.database if args.database else raw_input('Enter database name\n')
+    return db, sql_file
 
 
 def get_data():
