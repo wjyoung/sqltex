@@ -10,13 +10,6 @@ def establish_args():
 
 
 def get_args():
-    """
-    Reads args provided and reacts accordingly.
-    Not fully functional.
-
-    :return: tuple containing database name and sql file name
-    """
-
     args = establish_args()
     sql_file = args.sql_file if args.sql_file else raw_input('Enter .sql file to run\n')
     db = args.database if args.database else raw_input('Enter database name\n')
